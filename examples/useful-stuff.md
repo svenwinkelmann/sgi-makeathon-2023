@@ -31,7 +31,7 @@ Freeze requirements
 ### Python Flask
 https://flask.palletsprojects.com/en/2.2.x/quickstart/#a-minimal-application
 
-```flask --app hello run```
+```flask --app python-flask-server run```
 
 To send requests to your service, https://www.postman.com/downloads/ is a good application.
 
