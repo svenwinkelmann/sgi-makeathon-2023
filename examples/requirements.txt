@@ -9,3 +9,4 @@ MarkupSafe==2.1.2
 requests==2.28.2
 urllib3==1.26.14
 Werkzeug==2.2.3
+Test==2.4.5
