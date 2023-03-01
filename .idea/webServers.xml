@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="ab93eace-beee-48a0-812a-b5bb29df0d52" name="backend_server">
+        <fileTransfer accessType="SFTP" host="lego-K53SV" port="22" sshConfigId="8ca8aafc-5b14-4074-b370-599a5b56368a" sshConfig="lego@lego-K53SV:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
