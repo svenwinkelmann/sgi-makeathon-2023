@@ -45,7 +45,7 @@ class PlantDataBase:
                          f"({plant_ID}, {sensordata_temp}, {sensordata_humidity})")
         self.conn.commit()
 
-    def get_latest_data(self, plant_id) -> dict:
+    def get_latest_data(self, plant_id, task_id) -> dict:
         """
         Gets the newest parameter of specific plant and returns all parameters in json format
         :param plant_id:
@@ -53,14 +53,14 @@ class PlantDataBase:
         """
         self.cur.execute(f"SELECT * FROM measurement_values where plant_ID = {plant_id} ORDER BY Timestamp DESC LIMIT 1")
         data = self.cur.fetchone()
-        print(data)
         json_file = {
+            "task_id": task_id,
+            "measurement_id": data[0],
             "plant_ID": data[2],
             "timestamp": data[1],
             "sensordata_temp": data[3],
             "sensordata_humidity": data[4]
         }
-        print(type(json_file['timestamp']))
         return json_file
 
     def delete_data(self, table_name):
