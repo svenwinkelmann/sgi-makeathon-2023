@@ -51,13 +51,14 @@ class PlantDataBase:
         :param plant_id:
         :return:
         """
-        self.cur.execute("SELECT * FROM measurement_values where plant_ID = 1 ORDER BY Timestamp DESC LIMIT 1")
+        self.cur.execute(f"SELECT * FROM measurement_values where plant_ID = {plant_id} ORDER BY Timestamp DESC LIMIT 1")
         data = self.cur.fetchone()
+        print(data)
         json_file = {
-            "plant_ID": data[0],
+            "plant_ID": data[2],
             "timestamp": data[1],
-            "sensordata_temp": data[2],
-            "sensordata_humidity": data[3]
+            "sensordata_temp": data[3],
+            "sensordata_humidity": data[4]
         }
         print(type(json_file['timestamp']))
         return json_file
@@ -65,6 +66,3 @@ class PlantDataBase:
     def delete_data(self, table_name):
         self.cur.execute(f"DELETE FROM {table_name}")
         self.conn.commit()
-
-
-
