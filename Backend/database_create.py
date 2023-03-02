@@ -26,5 +26,5 @@ cur.execute(table_config)
 
 cur.execute("INSERT INTO measurement_values(plant_ID, sensordata_temp, sensordata_humidity) VALUES (1, 20, 30)")
 conn.commit()
-cur.execute("SELECT sensordata_temp from measurement_values where plant_ID = 1")
-print(cur.fetchone())
+cur.execute("SELECT * FROM measurement_values where plant_ID = 1 ORDER BY timestamp DESC LIMIT 1")
+print(type(cur.fetchone()[1]))
