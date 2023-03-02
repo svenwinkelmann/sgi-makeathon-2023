@@ -46,4 +46,3 @@ class PlantDataBase:
         self.cur.execute(f"DELETE FROM {table_name}")
         self.conn.commit()
 
-
