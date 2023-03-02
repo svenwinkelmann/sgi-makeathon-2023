@@ -1,0 +1,5 @@
+Befehle zum Verbinden des Raspi per WIFI
+nmcli
+Wenn das steht NetworkManager not running -> sudo systemctl start NetworkManager
+Scan für verfügbar Netzwerke : nmcli device wifi list --rescan yes
+Zum Verbinden: nmcli device wifi connect <ssid> password <passphrase>

@@ -31,7 +31,9 @@ Freeze requirements
 ### Python Flask
 https://flask.palletsprojects.com/en/2.2.x/quickstart/#a-minimal-application
 
-```flask --app hello run```
+```flask --app python-flask-server run``` to run server on localhost
+```flask --app python-flask-server run --host=192.168.1.x``` to define own host
+
 
 To send requests to your service, https://www.postman.com/downloads/ is a good application.
 
