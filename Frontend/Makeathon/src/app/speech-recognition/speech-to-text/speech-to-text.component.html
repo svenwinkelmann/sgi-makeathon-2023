@@ -2,7 +2,8 @@
   <h1>Voice recognition</h1>
   <button style="margin: 10px;" (click)="startService()">Start</button>
   <p>{{service.text}}</p>
-  <div *ngIf="this.robotIsActive; else elseBlock">Robot is ACITVE</div>
+  <div *ngIf="!isRobotReady(); else elseBlock">Robot is on TOUR</div>
   <ng-template #elseBlock>Robot is Ready</ng-template>
   <!-- <img src="/assets/img/Gruppenfoto.jpg" alt="Girl in a jacketes" width="500" height="600">  -->
+  <div *ngFor="let element of this.plants">{{element.timestamp}}</div>
 </div>

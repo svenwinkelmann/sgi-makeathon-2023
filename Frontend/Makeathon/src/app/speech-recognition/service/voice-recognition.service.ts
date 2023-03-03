@@ -8,7 +8,7 @@ declare var webkitSpeechRecognition: any;
   providedIn: 'root'
 })
 export class VoiceRecognitionService {
-  private approvalStageMessage = new BehaviorSubject('Bais approval..!');
+  private approvalStageMessage = new BehaviorSubject('BehaviorSubject');
   currentApprovalStageMessage = this.approvalStageMessage.asObservable();
   
   recognition =  new webkitSpeechRecognition();

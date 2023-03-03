@@ -1,6 +1,53 @@
 {
-  "plant_ID": 1,
-  "timestamp": "01.01.2022",
-  "sensordata_temp": 10,
-  "sensordata_humidity": 1337
+  "statusRobot": true,
+  "plants": [
+    {
+      "plant_id": 1,
+      "timestamp": "01.01.2022",
+      "sensordata_temp": 10,
+      "sensordata_humidity": 1337,
+      "sensordata_ground_humidity": 10.0,
+      "pest_infestation": 1
+    },
+    {
+      "plant_id": 2,
+      "timestamp": "02.01.2022",
+      "sensordata_temp": 10,
+      "sensordata_humidity": 1337,
+      "sensordata_ground_humidity": 10.0,
+      "pest_infestation": 1
+    },
+    {
+      "plant_id": 3,
+      "timestamp": "03.01.2022",
+      "sensordata_temp": 10,
+      "sensordata_humidity": 1337,
+      "sensordata_ground_humidity": 10.0,
+      "pest_infestation": 1
+    },
+    {
+      "plant_id": 4,
+      "timestamp": "04.01.2022",
+      "sensordata_temp": 10,
+      "sensordata_humidity": 1337,
+      "sensordata_ground_humidity": 10.0,
+      "pest_infestation": 1
+    },
+    {
+      "plant_id": 5,
+      "timestamp": "05.01.2022",
+      "sensordata_temp": 10,
+      "sensordata_humidity": 1337,
+      "sensordata_ground_humidity": 10.0,
+      "pest_infestation": 1
+    },
+    {
+      "plant_id": 6,
+      "timestamp": "06.01.2022",
+      "sensordata_temp": 10,
+      "sensordata_humidity": 1337,
+      "sensordata_ground_humidity": 10.0,
+      "pest_infestation": 1
+    }
+  ]
 }
