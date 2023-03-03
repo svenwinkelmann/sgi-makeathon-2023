@@ -11,8 +11,9 @@ def callback(chanel):
     else:
         print("Water detected")
 
+    print(GPIO.input(chanel))
+
 GPIO.add_event_detect(chanel, GPIO.BOTH, bouncetime=300)
 GPIO.add_event_callback(chanel, callback)
 
-while True:
-    time.sleep(1)
+callback(chanel)

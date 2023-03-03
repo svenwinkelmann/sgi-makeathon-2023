@@ -1,12 +1,23 @@
 from flask import Flask
 import time
+from sensors import readSensors
 app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
 def hello_world():
     return "<p>Hello, World!</p>"
 
+"""
+SENSOR TEST FUNCTION
+"""
 
+@app.route("/measurement_test", methods=['GET'])
+def measurement_test():
+    return readSensors()
+
+"""
+
+"""
 @app.route("/temp/<int:sensor_id>", methods=['GET'])
 def get_temperature(sensor_id):
     if sensor_id == 1:
@@ -40,3 +51,5 @@ def get_all():
 
     # return it as json data
     return ret
+
+app.run(host='192.168.0.106', port=5000)
