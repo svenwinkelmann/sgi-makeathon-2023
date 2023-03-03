@@ -11,20 +11,8 @@ except sqlite3.Error as e:
 
 cur = conn.cursor()
 
-table_config = "CREATE TABLE IF NOT EXISTS plants (plant_ID INTEGER PRIMARY KEY AUTOINCREMENT, gps, plant_type)"
-cur.execute(table_config)
-
-table_config = "CREATE TABLE IF NOT EXISTS measurement_values " \
-               "(measurement_id INTEGER PRIMARY KEY AUTOINCREMENT," \
-               "Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP," \
-               "plant_ID INTEGER, " \
-               "sensordata_temp INTEGER," \
-               "sensordata_humidity INTEGER," \
-               "FOREIGN KEY (plant_ID)" \
-               "REFERENCES plants (plant_ID) )"
-cur.execute(table_config)
-
-cur.execute("INSERT INTO measurement_values(plant_ID, sensordata_temp, sensordata_humidity) VALUES (1, 20, 30)")
+cur.execute("INSERT INTO plants(plant_ID, gps, plant_type) VALUES (6, '40°N,35°O', 'plant')")
 conn.commit()
-cur.execute("SELECT * FROM measurement_values where plant_ID = 1 ORDER BY timestamp DESC LIMIT 1")
-print(type(cur.fetchone()[1]))
+cur.execute("INSERT INTO measurement_values(plant_ID, sensordata_temp, sensordata_humidity, sensordata_ground_humidity,"
+            "pest_infestation) VALUES (6, 55, 55, 10, 1)")
+conn.commit()

@@ -4,18 +4,17 @@
 from flask import Flask, jsonify, request
 from plantdatabase import PlantDataBase
 import requests
-import threading
 
 # init #
 database = PlantDataBase()
 database.create_table()
-host_ip = '192.168.0.110'
+host_ip = '127.0.0.1'
 port = 5000
 raspi_ip = '192.168.0.106'
 app = Flask(__name__)
-ROBOT_AVAILABLE = True
+ROBOT_STATUS = True
 DATA_AVAILABLE = False
-TASK_ID = 0
+PLANT_NUM = 6
 # init end #
 
 """
@@ -23,25 +22,34 @@ GLOBAL FUNCTIONS:
 """
 
 
-def increment_task_if():
-    global TASK_ID
-    TASK_ID += 1
-
-
 def change_robot_state(s: bool):
-    global ROBOT_AVAILABLE
-    ROBOT_AVAILABLE = s
+    global ROBOT_STATUS
+    ROBOT_STATUS = s
 
 
 """
-RASPI RELATED:
+RASPI RESPONSE:
 """
 
 
-# If drive command, send to Raspi
+@app.route("/drive", methods=['POST'])
+def raspi_response():
+    response_json = request.get_json()
+    change_robot_state(True)
+    for i in range(5):
+        database.insert_measurement_data(response_json[i]['plant_id'],
+                                         response_json[i]['sensordata_temp'],
+                                         response_json[i]['sensordata_humidity'])
 
 
-@app.route("/drive/task/<int:raspi_task_id>", methods=['POST'])
+@app.route("/measurement_test", methods=['GET'])
+def measurement_test():
+    response = requests.get(f"http://{raspi_ip}:{port}/measurement_test")
+    response_json = response.json()
+    return jsonify(response_json)
+
+
+
 
 """
 def receive_task_data(raspi_task_id):
@@ -56,40 +64,40 @@ def receive_task_data(raspi_task_id):
     database.get_latest_data(response_json['plant_id'], task_id=raspi_task_id)
     change_robot_state(True)"""
 
-
 """
 FRONTEND RELATED:
 """
 
 
-@app.route("/drive/<int:plant_id>", methods=['GET'])
-def drive_task(plant_id):
-    """
-    FROM FE -> drive command
-    :param plant_id:
-    """
-    increment_task_if()
-    requests.get(f"http://{raspi_ip}:{port}/{TASK_ID}")
+@app.route("/drive", methods=['GET'])
+def drive_all_plants():
+    if not ROBOT_STATUS:
+        return
+    requests.get(f"http://{raspi_ip}:{port}/all")
     change_robot_state(False)
 
 
-@app.route("/data/<int:plant_id>")
-def get_data(plant_id):
+@app.route("/drive/<int:plant_id>", methods=['GET'])
+def drive_plant(plant_id):
+    if not ROBOT_STATUS:
+        return
+    requests.get(f"http://{raspi_ip}:{port}/drive/{plant_id}")
+    change_robot_state(False)
+
+
+@app.route("/data", methods=['GET'])
+def get_data():
     """
     FROM FE -> command to give latest data -> returns latest data
     :param plant_id:
     :return:
     """
-    return jsonify(database.get_latest_data(plant_id=plant_id, task_id=TASK_ID))
-
-
-@app.route("/drive/status", methods=['GET'])
-def robot_status():
-    """
-    FROM FE -> returns, if roboter available
-    :return:
-    """
-    return jsonify({"available": ROBOT_AVAILABLE})
+    data_list = []
+    for i in range(6):
+        data_list.append(database.get_latest_data(plant_id=(i + 1)))
+    print(data_list)
+    complete_json = {"plants":data_list, "robot_status":ROBOT_STATUS}
+    return jsonify(complete_json)
 
 
 """def drive_to_plant(plant_id):

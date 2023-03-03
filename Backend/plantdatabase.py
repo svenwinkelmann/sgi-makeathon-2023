@@ -32,6 +32,8 @@ class PlantDataBase:
                        "plant_ID INTEGER, " \
                        "sensordata_temp REAL," \
                        "sensordata_humidity REAL," \
+                       "sensordata_ground_humidity REAL," \
+                       "pest_infestation INTEGER," \
                        "FOREIGN KEY (plant_ID)" \
                        "    REFERENCES plants (plant_ID) )"
         self.cur.execute(table_config)
@@ -40,12 +42,17 @@ class PlantDataBase:
         self.cur.execute(f"INSERT INTO plants (gps, plant_type) VALUES ({gps}, {plant_type})")
         self.conn.commit()
 
-    def insert_measurement_data(self, plant_ID, sensordata_temp, sensordata_humidity):
-        self.cur.execute(f"INSERT INTO measurement_values (plant_ID, sensordata_temp, sensordata_humidity) VALUES "
-                         f"({plant_ID}, {sensordata_temp}, {sensordata_humidity})")
+    def insert_measurement_data(self, plant_id,
+                                sensordata_temp,
+                                sensordata_humidity,
+                                sensordata_ground_humidity,
+                                pest_infestation):
+        self.cur.execute(f"INSERT INTO measurement_values (plant_ID, sensordata_temp, sensordata_humidity, sensordata_ground_humidity, "
+                         f"pest_infestation) VALUES "
+                         f"({plant_id}, {sensordata_temp}, {sensordata_humidity}, {sensordata_ground_humidity}, {pest_infestation})")
         self.conn.commit()
 
-    def get_latest_data(self, plant_id, task_id) -> dict:
+    def get_latest_data(self, plant_id) -> dict:
         """
         Gets the newest parameter of specific plant and returns all parameters in json format
         :param plant_id:
@@ -54,12 +61,13 @@ class PlantDataBase:
         self.cur.execute(f"SELECT * FROM measurement_values where plant_ID = {plant_id} ORDER BY Timestamp DESC LIMIT 1")
         data = self.cur.fetchone()
         json_file = {
-            "task_id": task_id,
             "measurement_id": data[0],
-            "plant_ID": data[2],
+            "plant_id": data[2],
             "timestamp": data[1],
             "sensordata_temp": data[3],
-            "sensordata_humidity": data[4]
+            "sensordata_humidity": data[4],
+            "sensordata_ground_humidity": data[5],
+            "pest_infestation": data[6]
         }
         return json_file
 
