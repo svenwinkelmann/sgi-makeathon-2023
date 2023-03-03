@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/internal/Observable';
-import { of } from 'rxjs/internal/observable/of';
+import { BehaviorSubject } from 'rxjs-compat';
 
 
 declare var webkitSpeechRecognition: any;
@@ -9,16 +8,17 @@ declare var webkitSpeechRecognition: any;
   providedIn: 'root'
 })
 export class VoiceRecognitionService {
-
- recognition =  new webkitSpeechRecognition();
+  private approvalStageMessage = new BehaviorSubject('Bais approval..!');
+  currentApprovalStageMessage = this.approvalStageMessage.asObservable();
+  
+  recognition =  new webkitSpeechRecognition();
   isStoppedSpeechRecog = false;
   public text = '';
   tempWords;
 
   constructor() { }
 
-  init() {
-
+  init(){
     this.recognition.interimResults = true;
     this.recognition.lang = 'en-US';
 
@@ -28,37 +28,22 @@ export class VoiceRecognitionService {
         .map((result) => result.transcript)
         .join('');
       this.tempWords = transcript;
-      console.log(transcript);
+      console.log('init:' + transcript);
     });
   }
 
-  start(): Observable<string>{
+  start(){
     this.text = '';
     this.isStoppedSpeechRecog = false;
     this.recognition.start();
     console.log("Speech recognition started")
     this.recognition.addEventListener('end', (condition) => {
-      // if (this.isStoppedSpeechRecog) {
-      //   this.recognition.stop();
-      //   console.log("End speech recognition")
-      // } else {
-      //   this.wordConcat()
-      //   this.recognition.start();
-      // }
       this.wordConcat()
       this.recognition.stop();
       console.log("End speech recognition");
-
+      this.approvalStageMessage.next(this.text);
     });
-    
-    return of(this.text);
   }
-  // stop() {
-  //   this.isStoppedSpeechRecog = true;
-  //   this.wordConcat()
-  //   this.recognition.stop();
-  //   console.log("End speech recognition")
-  // }
 
   wordConcat() {
     this.text = this.text + ' ' + this.tempWords;
