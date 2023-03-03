@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,7 +20,8 @@ import { SpeechToTextComponent } from './speech-recognition/speech-to-text/speec
   imports: [
     BrowserModule,
     MatDialogModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule
   ],
   providers: [VoiceRecognitionService],
   bootstrap: [AppComponent]

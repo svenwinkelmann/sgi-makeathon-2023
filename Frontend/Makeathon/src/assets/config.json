@@ -1,0 +1,6 @@
+{
+  "plant_ID": 1,
+  "timestamp": "01.01.2022",
+  "sensordata_temp": 10,
+  "sensordata_humidity": 1337
+}
