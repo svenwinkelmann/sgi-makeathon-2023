@@ -1,9 +1,33 @@
-<div style="margin: 100px;">
-  <h1>Voice recognition</h1>
-  <button style="margin: 10px;" (click)="startService()">Start</button>
-  <p>{{service.text}}</p>
+<!DOCTYPE html>
+
+<!-- <header class="header">
+  <button mat-icon-button (click)="micIsClicked = !micIsClicked" [class.myClass]="micIsClicked">
+    <mat-icon id="home_button"></mat-icon>
+  </button>
+</header> -->
+<html>
+
+<body class="body">
+  <button class="micButton" (click)="startService()"></button>
+  <br>
+  <h1 class="textOutput ">Input: {{this.text}}</h1>
+  <br>
   <div *ngIf="!isRobotReady(); else elseBlock">Robot is on TOUR</div>
   <ng-template #elseBlock>Robot is Ready</ng-template>
-  <!-- <img src="/assets/img/Gruppenfoto.jpg" alt="Girl in a jacketes" width="500" height="600">  -->
-  <div *ngFor="let element of this.plants">{{element.timestamp}}</div>
-</div>
+  <div class="output1">{{this.plants[0].sensordata_temp}}°C</div>
+  <div class="output2">{{this.plants[0].light_intensity}}%</div>
+  <div class="output3">{{this.plants[0].sensordata_humidity}}%</div>
+  <div class="output4">{{this.plants[0].sensordata_ground_humidity}}%</div>
+  <!-- <div *ngFor="let element of this.plants">
+    <ul style="list-style-type:disc">
+      <h1>Plant: {{element.plant_id}}</h1>
+      <li>Temperature: {{element.sensordata_temp}}°C </li>
+      <li>Humidity: {{element.sensordata_humidity}}</li>
+      <li>Pest Infestation: {{element.pest_infestation}}</li>
+      <li>Light Intensity: {{element.light_intensity}}</li>
+      <li>Timestamp: {{element.timestamp}}</li>
+    </ul>
+  </div> -->
+</body>
+
+</html>

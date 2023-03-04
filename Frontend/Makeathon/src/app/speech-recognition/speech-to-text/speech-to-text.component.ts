@@ -23,6 +23,7 @@ export class SpeechToTextComponent implements OnInit {
   text: string = 'Init';
   robotIsReady: boolean;
   timerSubscription: Subscription;
+  micIsClicked = false;
   plants: Plant[] = [{ "measurement_id": 0, "plant_id": 0, "sensordata_humidity": 0, "sensordata_temp": 0, "timestamp": "", "sensordata_ground_humidity": 0, "pest_infestation": 0, "light_intensity": 0 },
   { "measurement_id": 0, "plant_id": 0, "sensordata_humidity": 0, "sensordata_temp": 0, "timestamp": "", "sensordata_ground_humidity": 0, "pest_infestation": 0, "light_intensity": 0 },
   { "measurement_id": 0, "plant_id": 0, "sensordata_humidity": 0, "sensordata_temp": 0, "timestamp": "", "sensordata_ground_humidity": 0, "pest_infestation": 0, "light_intensity": 0 },
@@ -43,7 +44,7 @@ export class SpeechToTextComponent implements OnInit {
     // const url: string = 'assets/config.json';
     // this.http.get(url, { observe: 'body', responseType: 'json' }).subscribe((response) => {
     //   let obj: any = JSON.parse(JSON.stringify(response));
-    //   this.isRobotActive = obj.statusRobot;
+    //   this.robotIsReady = obj.statusRobot;
     //   for (let i = 0; i < 6; i++) {
     //     this.plants[i].measurement_id = obj.plants[i].measurement_id;
     //     this.plants[i].plant_id = obj.plants[i].plant_id;
@@ -55,9 +56,11 @@ export class SpeechToTextComponent implements OnInit {
     //   }
     // })
     this.robotIsReady = true;
-    this.timerSubscription = timer(0, 1000).pipe(
+    this.timerSubscription = timer(0, 10000).pipe(
       map(() => {
+        console.log("getAllData");
         this.getAllData(); // load data contains the http request 
+
       })
     ).subscribe();
 
@@ -100,7 +103,7 @@ export class SpeechToTextComponent implements OnInit {
   }
 
   getAllData() {
-    this.http.get('http://192.168.0.110:5000/data',
+    this.http.get('http://192.168.0.102:5000/data',
       { observe: 'body', responseType: 'json' }).subscribe(response => {
         let obj: any = JSON.parse(JSON.stringify(response));
         this.robotIsReady = obj.robot_status;
@@ -119,7 +122,7 @@ export class SpeechToTextComponent implements OnInit {
 
   // TODO IN POST !!
   sendRobotToMeasurePlants() {
-    this.http.get('http://192.168.0.110:5000/drive',
+    this.http.get('http://192.168.0.102:5000/drive',
       { observe: 'body', responseType: 'json' }).subscribe(response => {
         console.log(response);
       });
@@ -128,7 +131,7 @@ export class SpeechToTextComponent implements OnInit {
 
   // TODO IN POST !!
   sendRobotToMeasurePlantOne() {
-    this.http.get('http://192.168.0.110:5000/drive/1',
+    this.http.get('http://192.168.0.102:5000/drive/1',
       { observe: 'body', responseType: 'json' }).subscribe(response => {
         console.log(response);
       });

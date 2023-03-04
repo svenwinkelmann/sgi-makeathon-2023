@@ -1,0 +1,71 @@
+ /* #home_button {
+  width: 130px;
+  height: 240px;
+  size: ;
+}
+
+.header {
+  margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  padding: 10px;
+} 
+*/
+ .micButton {
+   margin-left: 47.5%;
+   padding: 50px 35px;
+   display: flex;
+   margin-top: 7.5%;
+   display: inline-block;
+   background-color: transparent;
+   border: none;
+ }
+
+ .textOutput {
+   margin-left: 10%;
+   padding-top: 20px;
+   display: flex;
+   font-size: 30px;
+ }
+
+ /* .robotMessage {
+   margin-left: 10%;
+   padding-top: 20px;
+   display: flex;
+   font-size: 50px;
+ } */
+
+ .output1 {
+   margin-left: 32%;
+   padding-top: 50px;
+   display: flex;
+   font-size: 40px;
+ }
+
+ .output2 {
+   margin-left: 32%;
+   padding-top: 35px;
+   display: flex;
+   font-size: 40px;
+ }
+
+ .output3 {
+   margin-left: 32%;
+   padding-top: 35px;
+   display: flex;
+   font-size: 40px;
+ }
+
+ .output4 {
+   margin-left: 32%;
+   padding-top: 35px;
+   display: flex;
+   font-size: 40px;
+ }
+
+
+
+ body {
+   background-repeat: no-repeat;
+   background-image: url(/assets/img/Background.png);
+ }

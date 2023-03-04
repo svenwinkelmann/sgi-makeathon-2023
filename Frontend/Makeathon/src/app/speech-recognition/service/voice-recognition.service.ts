@@ -8,17 +8,17 @@ declare var webkitSpeechRecognition: any;
   providedIn: 'root'
 })
 export class VoiceRecognitionService {
-  private approvalStageMessage = new BehaviorSubject('BehaviorSubject');
+  private approvalStageMessage = new BehaviorSubject('...');
   currentApprovalStageMessage = this.approvalStageMessage.asObservable();
-  
-  recognition =  new webkitSpeechRecognition();
+
+  recognition = new webkitSpeechRecognition();
   isStoppedSpeechRecog = false;
   public text = '';
   tempWords;
 
   constructor() { }
 
-  init(){
+  init() {
     this.recognition.interimResults = true;
     this.recognition.lang = 'en-US';
 
@@ -32,7 +32,7 @@ export class VoiceRecognitionService {
     });
   }
 
-  start(){
+  start() {
     this.text = '';
     this.isStoppedSpeechRecog = false;
     this.recognition.start();
