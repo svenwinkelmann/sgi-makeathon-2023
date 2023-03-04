@@ -1,32 +1,59 @@
-from flask import Flask
+from flask import Flask, jsonify
 import time
-from sensors import readSensors
+# from sensors import readSensors
+import requests
+import threading
+import json
+
 app = Flask(__name__)
 
-@app.route("/", methods=['GET', 'POST'])
-def hello_world():
-    return "<p>Hello, World!</p>"
+# init
+backend_ip = '127.0.0.1'
+
+#
+
+"""
+GLOBAL FUNCTIONS:
+"""
+
+
+def send_data_to_back_end():
+    """
+    test_data
+    """
+    time.sleep(20)
+    test_measurements = {
+        "plant_id": 2,
+        "sensordata_temp": 3,
+        "sensordata_humidity": 4,
+        "pest_infestation": 5,
+        "light_intensity": 6
+    }
+
+    requests.post(f"http://{backend_ip}:5000/drive/result/1", json=test_measurements)
+
 
 """
 SENSOR TEST FUNCTION
 """
 
+
 @app.route("/measurement_test", methods=['GET'])
 def measurement_test():
-    return readSensors()
+    pass
+    # return readSensors()
+
 
 """
 
 """
-@app.route("/temp/<int:sensor_id>", methods=['GET'])
-def get_temperature(sensor_id):
-    if sensor_id == 1:
-        # here we need to read our sensor values
-        return "23.4"
-    elif sensor_id == 2:
-        return "21.0"
-    else:
-        return "not found"
+
+
+@app.route("/drive/<int:plant_id>", methods=['GET'])
+def drive_plant_raspi(plant_id):
+    t = threading.Thread(target=send_data_to_back_end)
+    t.start()
+    return jsonify({"Success": True})
 
 
 @app.route("/move/<position>", methods=['POST'])
@@ -37,7 +64,7 @@ def post_move(position):
     return f"Somewhere moved, no idea where to: {position}"
 
 
-@app.route("/all", methods=['GET'])
+"""@app.route("/all", methods=['GET'])
 def get_all():
     # read sensor data
     # TODO
@@ -45,11 +72,11 @@ def get_all():
     # put sensor data into a dict
     ret = {
         "plant_id": 1,
-        "sensordata_temp":20.5,
+        "sensordata_temp": 20.5,
         "sensordata_humidity": 23.5
     }
 
     # return it as json data
-    return ret
+    return ret"""
 
-app.run(host='192.168.0.106', port=5000)
+app.run(host='127.0.0.1', port=20000)

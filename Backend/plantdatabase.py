@@ -34,6 +34,7 @@ class PlantDataBase:
                        "sensordata_humidity REAL," \
                        "sensordata_ground_humidity REAL," \
                        "pest_infestation INTEGER," \
+                       "light_intensity REAL," \
                        "FOREIGN KEY (plant_ID)" \
                        "    REFERENCES plants (plant_ID) )"
         self.cur.execute(table_config)
@@ -46,10 +47,12 @@ class PlantDataBase:
                                 sensordata_temp,
                                 sensordata_humidity,
                                 sensordata_ground_humidity,
-                                pest_infestation):
+                                pest_infestation,
+                                light_intensity):
         self.cur.execute(f"INSERT INTO measurement_values (plant_ID, sensordata_temp, sensordata_humidity, sensordata_ground_humidity, "
-                         f"pest_infestation) VALUES "
-                         f"({plant_id}, {sensordata_temp}, {sensordata_humidity}, {sensordata_ground_humidity}, {pest_infestation})")
+                         f"pest_infestation, light_intensity) VALUES "
+                         f"({plant_id}, {sensordata_temp}, {sensordata_humidity}, {sensordata_ground_humidity}, {pest_infestation}"
+                         f", {light_intensity})")
         self.conn.commit()
 
     def get_latest_data(self, plant_id) -> dict:
@@ -67,7 +70,8 @@ class PlantDataBase:
             "sensordata_temp": data[3],
             "sensordata_humidity": data[4],
             "sensordata_ground_humidity": data[5],
-            "pest_infestation": data[6]
+            "pest_infestation": data[6],
+            "light_intensity": data[7]
         }
         return json_file
 

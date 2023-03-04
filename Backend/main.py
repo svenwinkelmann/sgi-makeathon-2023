@@ -4,11 +4,12 @@
 from flask import Flask, jsonify, request
 from plantdatabase import PlantDataBase
 import requests
+import os
 
 # init #
 database = PlantDataBase()
 database.create_table()
-host_ip = '127.0.0.1'
+host_ip = '192.168.0.110'
 port = 5000
 raspi_ip = '192.168.0.106'
 app = Flask(__name__)
@@ -32,14 +33,36 @@ RASPI RESPONSE:
 """
 
 
-@app.route("/drive", methods=['POST'])
-def raspi_response():
+@app.route("/drive/result", methods=['POST'])
+def raspi_response_all():
     response_json = request.get_json()
-    change_robot_state(True)
     for i in range(5):
         database.insert_measurement_data(response_json[i]['plant_id'],
                                          response_json[i]['sensordata_temp'],
-                                         response_json[i]['sensordata_humidity'])
+                                         response_json[i]['sensordata_humidity'],
+                                         response_json[i]['sensordata_ground_humidity'],
+                                         response_json[i]['pest_infestation'],
+                                         response_json[i]['light_intensity'])
+    return jsonify({"Received": True})
+
+
+@app.route("/drive/result/<int:plant_id>", methods=['POST'])
+def raspi_response(plant_id):
+    response_json = request.get_data()
+    print(response_json)
+    """    database.insert_measurement_data(response_json['plant_id'],
+                                     response_json['sensordata_temp'],
+                                     response_json['sensordata_humidity'],
+                                     response_json['sensordata_ground_humidity'],
+                                     response_json['pest_infestation'],
+                                     response_json['light_intensity'])"""
+    print(response_json)
+    return jsonify({"Received": True})
+
+
+@app.route("/robot_ready", methods=['GET'])
+def robot_ready():
+    change_robot_state(True)
 
 
 @app.route("/measurement_test", methods=['GET'])
@@ -48,21 +71,6 @@ def measurement_test():
     response_json = response.json()
     return jsonify(response_json)
 
-
-
-
-"""
-def receive_task_data(raspi_task_id):
-    
-    FROM RASPI -> GET DATA -> insert in database -> send it to FE
-    :return: 200 if data was correct transmitted
-    
-    response_json = request.get_json()
-    database.insert_measurement_data(response_json['plant_id'],
-                                     response_json['sensordata_temp'],
-                                     response_json['sensordata_humidity'])
-    database.get_latest_data(response_json['plant_id'], task_id=raspi_task_id)
-    change_robot_state(True)"""
 
 """
 FRONTEND RELATED:
@@ -73,7 +81,7 @@ FRONTEND RELATED:
 def drive_all_plants():
     if not ROBOT_STATUS:
         return
-    requests.get(f"http://{raspi_ip}:{port}/all")
+    requests.get(f"http://{raspi_ip}:{port}/drive")
     change_robot_state(False)
 
 
@@ -81,8 +89,9 @@ def drive_all_plants():
 def drive_plant(plant_id):
     if not ROBOT_STATUS:
         return
-    requests.get(f"http://{raspi_ip}:{port}/drive/{plant_id}")
+    #requests.get(f"http://{raspi_ip}:{port}/drive/{plant_id}")
     change_robot_state(False)
+    os.system('sshpass -p maker ssh robot@10.42.0.3 python3 main.py')
 
 
 @app.route("/data", methods=['GET'])
@@ -96,7 +105,7 @@ def get_data():
     for i in range(6):
         data_list.append(database.get_latest_data(plant_id=(i + 1)))
     print(data_list)
-    complete_json = {"plants":data_list, "robot_status":ROBOT_STATUS}
+    complete_json = {"plants": data_list, "robot_status": ROBOT_STATUS}
     return jsonify(complete_json)
 
 
