@@ -14,5 +14,5 @@ cur = conn.cursor()
 cur.execute("INSERT INTO plants(plant_ID, gps, plant_type) VALUES (6, '40°N,35°O', 'plant')")
 conn.commit()
 cur.execute("INSERT INTO measurement_values(plant_ID, sensordata_temp, sensordata_humidity, sensordata_ground_humidity,"
-            "pest_infestation) VALUES (6, 55, 55, 10, 1)")
+            "pest_infestation, light_intensity) VALUES (6, 55, 55, 10, 1, 100)")
 conn.commit()
